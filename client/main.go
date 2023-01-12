@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	// This import path is based on the name declaration in the go.mod,
-	// and the gen/proto/go output location in the buf.gen.yaml.
-	petv1 "github.com/bufbuild/buf-tour/petstore/gen/proto/go/pet/v1"
+	petv1grpc "buf.build/gen/go/douglarek/petapis/grpc/go/pet/v1/petv1grpc"
+	petv1 "buf.build/gen/go/douglarek/petapis/protocolbuffers/go/pet/v1"
 	"google.golang.org/grpc"
 )
 
@@ -24,7 +23,7 @@ func run() error {
 	}
 	log.Println("Connected to", connectTo)
 
-	petStore := petv1.NewPetStoreServiceClient(conn)
+	petStore := petv1grpc.NewPetStoreServiceClient(conn)
 	if _, err := petStore.PutPet(context.Background(), &petv1.PutPetRequest{
 		PetType: petv1.PetType_PET_TYPE_SNAKE,
 		Name:    "Ekans",

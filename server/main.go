@@ -6,9 +6,8 @@ import (
 	"log"
 	"net"
 
-	// This import path is based on the name declaration in the go.mod,
-	// and the gen/proto/go output location in the buf.gen.yaml.
-	petv1 "github.com/bufbuild/buf-tour/petstore/gen/proto/go/pet/v1"
+	"buf.build/gen/go/douglarek/petapis/grpc/go/pet/v1/petv1grpc"
+	petv1 "buf.build/gen/go/douglarek/petapis/protocolbuffers/go/pet/v1"
 	"google.golang.org/grpc"
 )
 
@@ -26,7 +25,7 @@ func run() error {
 	}
 
 	server := grpc.NewServer()
-	petv1.RegisterPetStoreServiceServer(server, &petStoreServiceServer{})
+	petv1grpc.RegisterPetStoreServiceServer(server, &petStoreServiceServer{})
 	log.Println("Listening on", listenOn)
 	if err := server.Serve(listener); err != nil {
 		return fmt.Errorf("failed to serve gRPC server: %w", err)
@@ -37,7 +36,7 @@ func run() error {
 
 // petStoreServiceServer implements the PetStoreService API.
 type petStoreServiceServer struct {
-	petv1.UnimplementedPetStoreServiceServer
+	petv1grpc.UnimplementedPetStoreServiceServer
 }
 
 // PutPet adds the pet associated with the given request into the PetStore.
